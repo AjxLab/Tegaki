@@ -12,7 +12,7 @@ import shutil
 import glob
 import yaml
 from tqdm import tqdm
-from getch import getch
+from lib.keyhundle import *
 
 
 if len(sys.argv) < 2:
@@ -31,9 +31,4 @@ if not class_name in classes:
 os.makedirs('data/' + class_name, exist_ok=True)
 
 
-while True:
-    key = getch()
-    print(key)
-    print(int(key.encode('utf-8', 'replace').hex(), 16))
-    if key == 'q':
-        break
+print(input_keys())
