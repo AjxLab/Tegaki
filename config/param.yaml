@@ -9,4 +9,4 @@ optimizer:
 loss:
   categorical_crossentropy
 size:
-  20
+  30

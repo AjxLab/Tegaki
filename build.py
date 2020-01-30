@@ -31,4 +31,5 @@ if not class_name in classes:
 os.makedirs('data/' + class_name, exist_ok=True)
 
 
-print(input_keys())
+config = yaml.load(open('config/param.yaml'), Loader=yaml.SafeLoader)
+print(input_keys(config['size']))

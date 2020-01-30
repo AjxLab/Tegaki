@@ -3,7 +3,7 @@ import numpy as np
 from getch import getch
 
 
-def input_keys(size=30):
+def input_keys(size):
     ## -----*----- 連続キーを入力 -----*----- ##
     keys = np.zeros(size)
 
