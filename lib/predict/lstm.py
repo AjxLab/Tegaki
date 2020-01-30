@@ -36,7 +36,9 @@ class LSTM_():
         ## -----*----- NNを構築 -----*----- ##
         # モデルの定義
         model = Sequential([
-            LSTM(256, input_shape=(self.hparams['size'], 1), activation='relu'),
+            #LSTM(256, input_shape=(self.hparams['size'], 1), activation='relu'),
+            #Dropout(self.hparams['dropout']),
+            Dense(256, input_shape=(self.hparams['size'],), activation='relu'),
             Dropout(self.hparams['dropout']),
             Dense(256, activation='relu'),
             Dropout(self.hparams['dropout']),
@@ -86,7 +88,7 @@ class LSTM_():
             y.append(file['class'])
 
         x = np.array(x, dtype=np.float32)
-        x = np.reshape(x, (x.shape[0], x.shape[1], 1))
+        #x = np.reshape(x, (x.shape[0], x.shape[1], 1))
         y = np.array(y, dtype=np.uint8)
 
         # ランダムに並べ替え
@@ -125,9 +127,10 @@ class LSTM_():
             self.__model.load_weights(self.model_path)
 
 
-    def predict(self, file):
+    def predict(self, file=None, data=None):
         ## -----*----- 推論 -----*----- ##
-        data = self.__read_data(file)
+        if not file == None:
+            data = self.__read_data(file)
         score = self.__model.predict(np.array([data]), batch_size=None, verbose=0)
         pred = np.argmax(score)
 
