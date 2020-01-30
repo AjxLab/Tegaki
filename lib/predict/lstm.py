@@ -17,7 +17,6 @@ class LSTM_():
         self.n_classes  = len(self.classes)
         self.batch_size = self.hparams['batch_size']
         self.epochs     = self.hparams['epochs']
-        self.img_size   = self.hparams['size']
 
         self.model_path = model_path
 
@@ -37,7 +36,7 @@ class LSTM_():
         ## -----*----- NNを構築 -----*----- ##
         # モデルの定義
         model = Sequential([
-            LSTM(256, input_shape=(20, 1), return_sequences=True, activation='relu'),
+            LSTM(256, input_shape=(sel.hparams['size'], 1), return_sequences=True, activation='relu'),
             Dropout(self.hparams['dropout']),
             LSTM(512, activation='relu'),
             Dropout(self.hparams['dropout']),
