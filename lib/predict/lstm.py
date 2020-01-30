@@ -44,6 +44,8 @@ class LSTM_():
             Dropout(self.hparams['dropout']),
             Dense(512, activation='relu'),
             Dropout(self.hparams['dropout']),
+            Dense(1026, activation='relu'),
+            Dropout(self.hparams['dropout']),
             Dense(512, activation='relu'),
             Dropout(self.hparams['dropout']),
             Dense(256, activation='relu'),

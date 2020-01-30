@@ -1,7 +1,7 @@
 batch_size:
   64
 epochs:
-  1000
+  1300
 dropout:
   0.5
 optimizer:
