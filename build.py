@@ -26,7 +26,7 @@ if classes == None:
     classes = []
 if not class_name in classes:
     classes.append(class_name)
-    yaml.dump(classes, open('config/class.yaml', 'w'))
+    yaml.dump(classes, open('config/class.yaml', 'w'), encoding='utf8')
 os.makedirs('data/' + class_name, exist_ok=True)
 
 
