@@ -5,9 +5,17 @@ A tool that recognize physical handwriting.
 
 
 ## Usage
+### Make Teacher Data
+```sh
+$ python build.py <char to register>
+```
 ### Train
 ```sh
 $ python train.py
+```
+### Recognize
+```sh
+$ python infer.py
 ```
 
 
