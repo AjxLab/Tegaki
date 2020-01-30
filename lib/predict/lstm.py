@@ -9,7 +9,7 @@ from tensorflow.keras import Sequential
 
 
 class LSTM_():
-    def __init__(self, train=False, add_noise=False, model_path='./model/model.hdf5'):
+    def __init__(self, train=False, model_path='./model/model.hdf5'):
         ## -----*----- コンストラクタ -----*----- ##
         self.classes = yaml.load(open('config/class.yaml'), Loader=yaml.SafeLoader)
         self.hparams = yaml.load(open('config/param.yaml'), Loader=yaml.SafeLoader)
@@ -25,7 +25,7 @@ class LSTM_():
 
         if train:
             # 学習
-            x, y = self.__features_extracter(add_noise)
+            x, y = self.__features_extracter()
             self.__train(x, y)
         else:
             # モデルの読み込み
@@ -36,11 +36,15 @@ class LSTM_():
         ## -----*----- NNを構築 -----*----- ##
         # モデルの定義
         model = Sequential([
-            LSTM(256, input_shape=(sel.hparams['size'], 1), return_sequences=True, activation='relu'),
+            LSTM(256, input_shape=(self.hparams['size'], 1), activation='relu'),
             Dropout(self.hparams['dropout']),
-            LSTM(512, activation='relu'),
+            Dense(256, input_shape=(self.hparams['size'],), activation='relu'),
             Dropout(self.hparams['dropout']),
             Dense(512, activation='relu'),
+            Dropout(self.hparams['dropout']),
+            Dense(512, activation='relu'),
+            Dropout(self.hparams['dropout']),
+            Dense(256, activation='relu'),
             Dropout(self.hparams['dropout']),
             Dense(256, activation='relu'),
             Dropout(self.hparams['dropout']),
@@ -67,12 +71,22 @@ class LSTM_():
         self.__model.save_weights(self.model_path)
 
 
-    def __features_extracter(self, add_noise):
+    def __features_extracter(self):
         ## -----*----- 特徴量を抽出 -----*----- ##
         x = [] # 入力
         y = [] # 出力ラベル
 
+        files = []
+        for class_ in self.classes:
+            class_files = [{'path': f, 'class': self.classes.index(class_)} for f in glob.glob('data/%s/*'%class_)]
+            files.extend(class_files)
+
+        for file in tqdm(files):
+            x.append(self.__read_data(file['path']))
+            y.append(file['class'])
+
         x = np.array(x, dtype=np.float32)
+        x = np.reshape(x, (x.shape[0], x.shape[1], 1))
         y = np.array(y, dtype=np.uint8)
 
         # ランダムに並べ替え
@@ -82,6 +96,14 @@ class LSTM_():
         y = y[perm]
 
         return x, y
+
+
+    def __read_data(self, file):
+        ## -----*----- ファイルからデータを読み取り -----*----- ##
+        csv_read = open(file, 'r').read().split(',')
+        ret = map(lambda x: float(x), csv_read)
+
+        return list(ret)
 
 
     def nomalize(self, x, axis=None):
@@ -105,7 +127,7 @@ class LSTM_():
 
     def predict(self, file):
         ## -----*----- 推論 -----*----- ##
-        data = []
+        data = self.__read_data(file)
         score = self.__model.predict(np.array([data]), batch_size=None, verbose=0)
         pred = np.argmax(score)
 

@@ -7,6 +7,6 @@ dropout:
 optimizer:
   adam
 loss:
-  categorical_crossentropy
+  sparse_categorical_crossentropy
 size:
   30
