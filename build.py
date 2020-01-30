@@ -8,10 +8,9 @@
 
 import os
 import sys
-import shutil
-import glob
 import yaml
-from tqdm import tqdm
+import csv
+import datetime
 from lib.keyhundle import *
 
 
@@ -31,5 +30,22 @@ if not class_name in classes:
 os.makedirs('data/' + class_name, exist_ok=True)
 
 
+# 入力キーを記録
+print('「%s」を記録（Ctrl-Cで終了）' % class_name)
 config = yaml.load(open('config/param.yaml'), Loader=yaml.SafeLoader)
-print(input_keys(config['size']))
+cnt = 0
+while True:
+    print('Now：%d step' % cnt)
+    keys = input_keys(config['size'])
+    dt_now = datetime.datetime.now()
+    file_name = 'data/%s/%s.csv' % (
+        class_name,
+        datetime.datetime.now().strftime('%Y-%m-%d--%H:%M:%S:%f')
+    )
+
+    # CSVに保存
+    with open(file_name, 'w') as f:
+        writer = csv.writer(f)
+        writer.writerow(keys)
+
+    cnt += 1
