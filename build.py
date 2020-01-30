@@ -33,10 +33,11 @@ os.makedirs('data/' + class_name, exist_ok=True)
 # 入力キーを記録
 print('「%s」を記録（Ctrl-Cで終了）' % class_name)
 config = yaml.load(open('config/param.yaml'), Loader=yaml.SafeLoader)
+hundler = Hundle(config['size'])
 cnt = 0
 while True:
     print('Now：%d step' % cnt)
-    keys = input_keys(config['size'])
+    keys = hundler.input_keys()
     dt_now = datetime.datetime.now()
     file_name = 'data/%s/%s.csv' % (
         class_name,

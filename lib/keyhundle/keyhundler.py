@@ -17,7 +17,7 @@ class Hundle():
         self.is_end = False
 
 
-    def input_keys(self, limit=1.0):
+    def input_keys(self, limit=0.4):
         ## -----*----- 連続キーを入力 -----*----- ##
         self.reset()
         t = time.time()
