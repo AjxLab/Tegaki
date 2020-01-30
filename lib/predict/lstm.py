@@ -38,7 +38,7 @@ class LSTM_():
         model = Sequential([
             LSTM(256, input_shape=(self.hparams['size'], 1), activation='relu'),
             Dropout(self.hparams['dropout']),
-            Dense(256, input_shape=(self.hparams['size'],), activation='relu'),
+            Dense(256, activation='relu'),
             Dropout(self.hparams['dropout']),
             Dense(512, activation='relu'),
             Dropout(self.hparams['dropout']),
